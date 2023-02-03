@@ -1,1 +1,2 @@
-#### Mishegyan's Repository Guide
+#### Mishegyan's Repository Guide  
+Week 2's Assignment Purpose
