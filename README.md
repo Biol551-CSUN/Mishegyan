@@ -41,4 +41,10 @@ Here is an example of how it should look:
 
 ### _Part 6 - Saving & uploading your work to GitHub_
 &nbsp; To begin, save your work as often as possible by clicking the save buttom at the top left corner. The first step in uploading to GitHub is making sure your work is saved, any changes make will require you to save again in order to submit.  
-Next, we have to upload to GitHub with the following steps:in the terminal tab of the environment pane type "git add ScriptName.R" then hit enter, "git commit
+Next, we have to upload to GitHub with the following steps in the terminal tab of the environment pane:  
+1. type git add ScriptName.R then hit enter  
+2. type git commit -a -m "I am adding a test script" (ie. needs a comment in the parentheses) then hit enter 
+3. type git push then hit enter  
+4. All done, you have completed your first script!!
+
+![Finally](https://www.google.com/url?sa=i&url=https%3A%2F%2Fgiphy.com%2Fexplore%2Ffinallya&psig=AOvVaw37Rr7Dj99AKdK59VUckztj&ust=1675846637643000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOCUv6-Fg_0CFQAAAAAdAAAAABAR)
