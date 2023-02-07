@@ -47,4 +47,4 @@ Next, we have to upload to GitHub with the following steps in the terminal tab o
 3. type git push then hit enter  
 4. All done, you have completed your first script!!
 
-![Finally](https://www.google.com/url?sa=i&url=https%3A%2F%2Fgiphy.com%2Fexplore%2Ffinallya&psig=AOvVaw37Rr7Dj99AKdK59VUckztj&ust=1675846637643000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOCUv6-Fg_0CFQAAAAAdAAAAABAR)
+![Finally](https://media0.giphy.com/media/wXnmM6hHFtz3IulO36/giphy.gif)
