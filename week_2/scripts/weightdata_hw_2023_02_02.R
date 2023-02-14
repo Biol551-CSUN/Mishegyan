@@ -15,3 +15,4 @@ head(weight_data) # Looks at the top 6 lines of the data frame
 tail(weight_data) # Looks at the bottom 6 lines of the data frame
 View(weight_data) # opens a new window to look at the entire data frame
 glimpse(weight_data) # shows data in an alternative way to view()
+
