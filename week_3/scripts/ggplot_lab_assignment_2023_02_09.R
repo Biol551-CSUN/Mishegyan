@@ -12,8 +12,8 @@ library(ggthemes)
 
 
 ### Load data ######
-# The data is part of the package and is called penguins
-glimpse(penguins) # Glimpse helps inspect the the penguin data
+# the data is part of the package and is called penguins
+glimpse(penguins) # glimpse helps inspect the the penguin data
 
 
 ### Data Analysis ######
@@ -30,7 +30,7 @@ ggplot(data = penguins_summary,
            stat = "identity") + 
   labs(x = "Species",
        y = "Flipper Length (mm)",
-       title = "Flipper Length of Males v. Females Penuins",
+       title = "Flipper Length of Males v. Females Penguins",
        fill = "Sex") +
   theme(plot.title = element_text(hjust = .5)) + # centers plot title
   scale_fill_manual(values = beyonce_palette(72)) # adds beyonce color palette to bars
