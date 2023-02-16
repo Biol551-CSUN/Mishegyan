@@ -24,9 +24,9 @@ tail(penguins)
 
 # Assignment Part 1
 assignment_1 <- penguins %>% 
-  drop_na(species, island, sex) %>% # Drops all NA's in species, island, and sex
-  group_by(species, island, sex) %>% # Groups by so that you can summarize values by certain groups.
-  summarise(mean_body_mass_g = mean(body_mass_g, na.rm = TRUE), # Summarise allows calcs. like mean and variance
+  drop_na(species, island, sex) %>% # drops all NA's in species, island, and sex
+  group_by(species, island, sex) %>% # groups by so that you can summarize values by certain groups.
+  summarise(mean_body_mass_g = mean(body_mass_g, na.rm = TRUE), # summarise allows calcs. like mean and variance
             variance_body_mass_g = var(body_mass_g, na.rm = TRUE))
 View(assignment_1)
 
@@ -39,20 +39,19 @@ assignment_2 <- penguins %>%
             Species = species,
             Body_Mass_g = body_mass_g) %>%
   mutate(Log_Body_Mass_g = log(Body_Mass_g)) %>% # allows for calcs. on each row within a column
-  ggplot( mapping = aes(x = Island,
+  ggplot(mapping = aes(x = Island, # sets log (Body Mass) as a function of island
                        y = Log_Body_Mass_g,
                        color = Species)) +
-    geom_boxplot() +
-    geom_jitter(alpha = .4,
-                position = position_dodge(width = 0.7)
-                ) +
-      labs(y = "log (Body Mass (g))",
+    geom_boxplot() + # plots log (Body Mass) as a function of island using a box plot graph
+    geom_jitter(alpha = .4, # plots log (Body Mass) as a function of island using a jitter plot graph
+                position = position_dodge(width = 0.7)) +
+      labs(y = "log(Body Mass) (g)",
            x = "Island",
            title = "Body Mass of Females Penguins",
-           fill = "Species"
-           ) +
-      theme(plot.title = element_text(hjust = .5))
+           fill = "Species") +
+      theme(plot.title = element_text(hjust = .5)) # centers graph title
 
 assignment_2
 
-ggsave(here("week_04","output","penguin.png"))
+ggsave(here("week_4","output","data_wrangling_lab_assignment_part2_2023_02_14.R.png"),
+       width = 7, height = 5) # adjust size of graph in inches
