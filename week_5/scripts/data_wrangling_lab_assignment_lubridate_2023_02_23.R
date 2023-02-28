@@ -1,7 +1,7 @@
 ### Today we are going to data wrangle using lubridate package for lab ####
 ### Created by: Avetis Mishegyan #############
 ### Created on: 2023-02-23 ####################
-
+### Updated on: 2023-02-28 ####################
 
 #### Load Libraries ######
 library(tidyverse)
@@ -43,14 +43,12 @@ View(cond_depth_means)
 cond_depth_means %>%
   ggplot(mapping = aes(x = date,
                        y = mean_temp)) +
-    geom_line() +
+    geom_line(color = "#B32929") +
       labs(x = "Time of Day (UTC)",
            y = "Mean Temp (°C) ",
-           title = "Average Temp v. Time of Day",
-           color = alphonse("onepiece")) +
-  theme(plot.title = element_text(hjust = .5)) + # centers plot title
+           title = "Average Temp v. Time of Day") +
   theme_classic() +
-  scale_color_manual(values = alphonse("onepiece")) # sets One Piece color palette
-
+  theme(plot.title = element_text(hjust = .5))  # centers plot title, won't work if before theme_classic()
+  
 ggsave(here("week_5","output","data_wrangling_lab_assignment_lubridate_2023_02_23.png"), # names and saves ggplot
        width = 5, height = 5) # adjust size of graph in inches
