@@ -89,4 +89,3 @@ topt_site_graph # allows us to view our graph
 ggsave(here("week_6","output","lab_practice_RMarkdown_2023_03_02.png"), # names and saves ggplot
        width = 10, height = 5) # adjust size of graph in inches
 ```
-
