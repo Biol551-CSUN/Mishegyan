@@ -84,7 +84,4 @@ topt_site_graph <- topt_site_data %>%
   theme(plot.title = element_text(hjust = .5)) # centers plot title
 
 topt_site_graph # allows us to view our graph
-
-ggsave(here("week_6","output","lab_practice_RMarkdown_2023_03_02.png"), # names and saves ggplot
-       width = 10, height = 5) # adjust size of graph in inches
 ```
