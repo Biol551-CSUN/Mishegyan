@@ -1,0 +1,92 @@
+---
+title: "Rmarkdown Lab Assignment"
+author: "Avetis Mishegyan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.path = "../output/")
+```
+
+# Introduction
+
+Today we are going to practice *RMarkdown* in lab based on the following instructions:  
+
+1. Take any of the data sheets you have already worked with in class and create **at least**  
+ **one table and one figure in an Rmarkdown file.**  
+2. Create the most beautiful RMarkdown output you can during lab hours in either an  
+ html, github doc, or pdf format.  
+3. Make sure you have headings with clear explanations of what you are doing.  
+4. Practice using markdown formatting with bold, italics, and lists (use each of these at  
+ least once).  
+5. Make sure your outputs and scripts are saved in the appropriate folders. Keep proper  
+ coding etiquette (figures need to be pub quality as usual and you need to comment  
+ your code).  
+
+## Load Libraries
+
+Here is where we will load any libraries that we will be using. These libraries contain use full packages that are collections of R functions, data, and compiled code in a well-defined format.
+
+```{r}
+library(tidyverse)
+library(here)
+library(viridis)
+library(kableExtra)
+```
+
+## Load Data
+
+Here is where we will load (ie. pull) our data as a ".csv" format into our R script. Additionally, this is where we would also inspect our data.
+
+```{r}
+topt_data <- read_csv(here("week_6", "data", "Topt_data.csv")) # loads the data from a .csv file
+glimpse(topt_data) # allows us to inspect the data
+
+site_data <- read_csv(here("week_6", "data", "site.characteristics.data.csv"))
+glimpse(site_data)
+```
+
+## Data Analysis
+
+Here is where we will start our data analysis whether that be calculations, graphs, etc.
+
+```{r lab_practice_RMarkdown_2023_03_02, fig.width=10, fig.height=5, fig.align='center'}
+topt_site_data <- left_join(topt_data, site_data) %>% # keeps all data from topt_data and matches data from site_data
+  drop_na() %>% # drops all NA's from data
+  mutate(rate_type = case_when(rate.type == "C" ~ "Calcification", # renames rate type to full name
+                               rate.type == "R" ~ "Respiration",
+                               rate.type == "GP" ~ "Gross Photosynthesis"))
+
+glimpse(topt_site_data) # let's check out our mutation or change below:
+
+# Here is a more beautiful visualization below:
+topt_site_data %>%
+  group_by(fragment.ID, rate.type, E, Eh, lnc, Th, Topt, site.letter, name, site.block, parameter.measured, values, rate_type) %>%
+  head() %>% # allows us to view the first 6 rows
+  kbl() %>% # makes a kable table
+  kable_classic() %>% # sets kable table theme to classic
+  column_spec(13, bold = T, color = "white", background = "red") # highlights, changes font color, and bolds font of column 13
+
+topt_site_graph <- topt_site_data %>% 
+  ggplot(mapping = aes(x = name,
+                       y = rate_type,
+                       fill = Topt)) +
+  geom_tile() + # heat map function
+  labs(x = "Site Name",
+       y = "Rate Type",
+       fill = "Thermal Optima (°C)",
+       title = "Thermal Optima by Rate Type and Loaction") +
+  scale_fill_viridis(discrete = FALSE) + # sets heat map colors
+  theme_classic() + # sets theme to classic
+  theme(plot.title = element_text(hjust = .5)) # centers plot title
+
+topt_site_graph # allows us to view our graph
+
+ggsave(here("week_6","output","lab_practice_RMarkdown_2023_03_02.png"), # names and saves ggplot
+       width = 10, height = 5) # adjust size of graph in inches
+```
+
