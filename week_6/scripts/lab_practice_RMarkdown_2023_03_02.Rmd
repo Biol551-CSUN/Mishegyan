@@ -65,7 +65,6 @@ glimpse(topt_site_data) # let's check out our mutation or change below:
 
 # Here is a more beautiful visualization below:
 topt_site_data %>%
-  group_by(fragment.ID, rate.type, E, Eh, lnc, Th, Topt, site.letter, name, site.block, parameter.measured, values, rate_type) %>%
   head() %>% # allows us to view the first 6 rows
   kbl() %>% # makes a kable table
   kable_classic() %>% # sets kable table theme to classic
