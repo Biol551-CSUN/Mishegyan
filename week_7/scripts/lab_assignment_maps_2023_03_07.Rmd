@@ -1,0 +1,91 @@
+---
+title: "Maps Lab Assignment"
+author: "Avetis Mishegyan"
+date: "`r Sys.Date()`"
+output: 
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.path = "../output/")
+```
+
+## Introduction
+
+Today we are going to make a map using RMarkdown with one of the following datasets from past Tidy Tuesdays:  
+1. [Plastic pollution](https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-01-26)  
+2. [Cats on the move!](https://github.com/rfordatascience/tidytuesday/blob/master/data/2023/2023-01-31)  
+3. [Where is Bigfoot!](https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-09-13)  
+4. [Meteorites](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-06-11)  
+
+The following script below will use the Bigfoot dataset. Additionally, we are making sure, as usual, that our scripts and output are saved appropriately.
+
+## Load Libraries
+
+Here is where we will load any libraries that we will be using. These libraries contain use full packages that are collections of R functions, data, and compiled code in a well-defined format.
+
+```{r}
+library(tidyverse)
+library(here)
+library(maps)
+library(mapdata)
+library(mapdata)
+library(mapproj)
+```
+
+## Load Data
+
+Here is where we will load (ie. pull) our data as a ".csv" format into our R script. Additionally, this is where we would also inspect our data.
+
+```{r, results="hide"}
+tuesdata <- tidytuesdayR::tt_load('2022-09-13') # reads in data using the tidytuesdayR package
+```
+```{r}
+bigfoot <- tuesdata$bigfoot
+
+head(bigfoot) # head shows only first 6 row of the data
+glimpse(bigfoot) # glimpse allows us to inspect the data
+```
+
+## Data Analysis
+
+Here is where we will start our data analysis whether that be calculations, graphs, etc.
+
+### Data Manipulation - Filter by California
+
+```{r}
+cali_bigfoot <- bigfoot %>%
+  drop_na() %>% # drops all NA's
+  filter(state == "California") # filters out data from California only
+glimpse(cali_bigfoot) # let's check out our mutation or change below:
+
+counties <- map_data("county") # gets data for counties in the USA
+glimpse(counties)
+```
+
+### Plot Data - Bigfoot Sightings
+
+```{r lab_assignment_maps_2023_03_07, fig.width=20, fig.height=10, fig.align='center'}
+counties %>% # uses the counties dataset
+  filter(region == "california") %>% # filters out just the California data
+  ggplot() +
+  geom_polygon(aes(x = long, # function that makes a map of county data
+                   y = lat,
+                   group = group),
+               fill = "green",
+               color = "black") +
+  geom_point(data = cali_bigfoot, # function that adds a point at Bigfoot sightings
+             aes(x =longitude,
+                 y = latitude,
+                 size = number)) + # sets size of points on the map by number of sightings
+  labs(size = "# Bigfoot Sightings:") + # sets legend name
+  coord_map() + # sets map projection to account for 2D visualization of a globe
+  theme_void() + # sets graph theme to void
+  scale_fill_gradient(trans = "log10") # changes axes to log scale for easier interpretation
+```
