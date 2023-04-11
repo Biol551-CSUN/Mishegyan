@@ -1,0 +1,7 @@
+name,plot_name,description
+sample,Sample,"control or flood turmeric plant, and which biological replicate"
+leaf_id,Leaf ID,which leaf that was analyzed from the same control or flood turmeric plant
+treatment,Treatment,"whether the turmeric was kept as a control, or flooded"
+abs,Absorbance,wavelength of absorbance measurement at either 645 nm or 663 nm
+chloro_undil,Chlorophyll Undiluted,absorbance measuremeants at 645 nm and 663 nm of undilted chlorophyll sample
+chloro_dil,Chlorophyll Diluted,absorbance measuremeants at 645 nm and 663 nm of dilted chlorophyll sample

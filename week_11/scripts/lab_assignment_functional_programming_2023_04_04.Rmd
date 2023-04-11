@@ -1,0 +1,135 @@
+---
+title: "Functional Programing Lab"
+author: "Avetis Mishegyan"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.path = "../output/")
+```
+
+## Introduction
+
+Today we are going to make a use any data set of our choosing to make two useful functions:
+
+* One that is a plot
+* One that is not
+* Turn in your functions using RMarkdown with at least 2 examples for each function
+
+## Load Libraries
+
+Here is where we will load any libraries that we will be using. These libraries contain use full packages that are collections of R functions, data, and compiled code in a well-defined format.
+
+```{r}
+library(tidyverse)
+library(here)
+library(alphonse) # for alphonse color palette
+```
+
+## Load Data
+
+Here is where we will load (ie. pull) our data as a ".csv" format into our R script. Additionally, this is where we would also inspect our data.
+
+```{r}
+undil_chloro_data <- read_csv(here("week_11", "data", "undiluted_turmeric_flood_chlorophyll_test_2022_12_12.csv")) # loads the data from a .csv file
+glimpse(undil_chloro_data) # allows us to inspect the data
+
+dil_chloro_data <- read_csv(here("week_11", "data", "diluted_turmeric_flood_chlorophyll_test_2022_12_12.csv"))
+glimpse(dil_chloro_data)
+```
+
+## Data Analysis
+
+### Total Chlorophyll Function
+
+```{r}
+total_chlorophyll <- function(abs_645, abs_663) { # name of function, and list of inputs (ie. arguments)
+  chloro_a <- 12.7*abs_663 - 2.69*abs_645 # code you have developed in body of the function
+  chloro_b <- 22.9*abs_645 - 4.68*abs_663
+  total = chloro_a + chloro_b
+  return(total) # returns values we want
+}
+
+total_chlorophyll(.2, .8) # test of function
+```
+
+### Total Chlorophyll Calculations for Undiluted Samples
+
+```{r}
+total_calc_undil <- undil_chloro_data %>%
+  pivot_wider(names_from = abs, # pivots the data wider
+              values_from = chloro_undil) %>%
+  mutate(total_undil = total_chlorophyll(abs_645, abs_663)*5) %>% # calculates total chlorophyll into new column
+  group_by(treatment) %>% # groups data by values in the treatment column
+  summarise(mean_total_undil = mean(total_undil, na.rm = TRUE), # computes a table of summarized data
+            sd_total_undil = sd(total_undil, na.rm = TRUE))
+glimpse(total_calc_undil)
+```
+
+
+### Total Chlorophyll Calculations for Diluted Samples
+
+```{r}
+total_calc_dil <- dil_chloro_data %>%
+  pivot_wider(names_from = abs,
+              values_from = chloro_dil) %>%
+  mutate(total_dil = total_chlorophyll(abs_645, abs_663)*5*10) %>%
+  group_by(treatment) %>%
+  summarise(mean_total_dil = mean(total_dil, na.rm = TRUE),
+            sd_total_dil = sd(total_dil, na.rm = TRUE))
+glimpse(total_calc_dil)
+```
+
+### Bar Plot Function
+
+```{r}
+bar_plot <- function(data, x, y, fill, sd, lab_x, lab_y, title){ 
+ggplot(data, aes(x = {{x}},
+                 y = {{y}}, 
+                 fill = {{fill}})) +
+  geom_bar(stat = "identity") + # bar plot function
+  geom_errorbar(aes(ymin = {{y}} - {{sd}}, # error bar function
+                    ymax = {{y}} + {{sd}}),
+                width = .2) + # adjusts width of error bars
+  labs(x = lab_x,
+       y = lab_y,
+       title = title) +
+  scale_fill_manual(values = alphonse("demon")) + # colors bars using alphonse color palette
+  theme_classic() + # sets plot theme to classic
+  theme(legend.position = "none") + # removes legend
+  theme(plot.title = element_text(hjust = .5)) # centers plot title
+}
+```
+
+### Total Chlorophyll Bar Plot for Undiluted Samples
+
+```{r total_undiluted_bar, fig.width=10, fig.height=5, fig.align='center',  fig.cap="Figure 1. The mean total chlorophyll of undiluted extractions of all biological replicates consisting of 3 separate leaf samples for each biological replicate for each treatment is represented above. Biological replicates consisted of control: n = 3 and flood: n = 3. Error bars above represent standard deviation."}
+bar_plot(data = total_calc_undil,
+         x = treatment,
+         y = mean_total_undil,
+         fill = treatment,
+         sd = sd_total_undil,
+         lab_x = "Treatment",
+         lab_y = "Mean Total Chlorophyll (mg)",
+         title = "Turmeric Mean Total Chlorophyll Undiluted Flood v. Control")
+```
+
+### Total Chlorophyll Bar Plot for Diluted Samples
+
+```{r total_diluted_bar, fig.width=10, fig.height=5, fig.align='center',  fig.cap="Figure 2. The mean total chlorophyll of diluted extractions of all biological replicates consisting of 3 separate leaf samples for each biological replicate for each treatment is represented above. Biological replicates consisted of control: n = 3 and flood: n = 3. Error bars above represent standard deviation."}
+bar_plot(data = total_calc_dil,
+         x = treatment,
+         y = mean_total_dil,
+         fill = treatment,
+         sd = sd_total_dil,
+         lab_x = "Treatment",
+         lab_y = "Mean Total Chlorophyll (mg)",
+         title = "Turmeric Mean Total Chlorophyll Diluted Flood v. Control")
+```
