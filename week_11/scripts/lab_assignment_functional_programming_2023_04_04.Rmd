@@ -53,7 +53,7 @@ glimpse(dil_chloro_data)
 total_chlorophyll <- function(abs_645, abs_663) { # name of function, and list of inputs (ie. arguments)
   chloro_a <- 12.7*abs_663 - 2.69*abs_645 # code you have developed in body of the function
   chloro_b <- 22.9*abs_645 - 4.68*abs_663
-  total = chloro_a + chloro_b
+  total <- chloro_a + chloro_b
   return(total) # returns values we want
 }
 
