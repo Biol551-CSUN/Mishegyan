@@ -11,7 +11,7 @@
 
 <meta name="author" content="Avetis Mishegyan" />
 
-<meta name="date" content="2023-04-11" />
+<meta name="date" content="2023-04-17" />
 
 <title>Functional Programing Lab</title>
 
@@ -1487,7 +1487,7 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">Functional Programing Lab</h1>
 <h4 class="author">Avetis Mishegyan</h4>
-<h4 class="date">2023-04-11</h4>
+<h4 class="date">2023-04-17</h4>
 
 </div>
 
@@ -1541,8 +1541,8 @@ glimpse(dil_chloro_data)</code></pre>
 <div id="total-chlorophyll-function" class="section level3">
 <h3>Total Chlorophyll Function</h3>
 <pre class="r"><code>total_chlorophyll &lt;- function(abs_645, abs_663) { # name of function, and list of inputs (ie. arguments)
-  chloro_a &lt;- 12.7*abs_663 - 2.69*abs_645 # code you have developed in body of the function
-  chloro_b &lt;- 22.9*abs_645 - 4.68*abs_663
+  chloro_a &lt;- 12.7*{{abs_663}} - 2.69*{{abs_645}} # code you have developed in body of the function
+  chloro_b &lt;- 22.9*{{abs_645}} - 4.68*{{abs_663}}
   total &lt;- chloro_a + chloro_b
   return(total) # returns values we want
 }
