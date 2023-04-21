@@ -1,0 +1,76 @@
+---
+title: "Working with Factors Lab Assignment"
+author: "Avetis Mishegyan"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.path = "../output/")
+```
+
+## Introduction
+
+Today we are going to clean up data using skills from working with words and factors to:
+
+* Clean up issues with the character data
+* Reorder factors into orders that make sense
+* Make column headers better
+* Make a plot with one of the axes as a factor
+
+## Load Libraries
+
+Here is where we will load any libraries that we will be using. These libraries contain use full packages that are collections of R functions, data, and compiled code in a well-defined format.
+
+```{r}
+library(tidyverse)
+library(here)
+library(janitor) # for cleaning up data
+library(viridis) # for viridis color palette
+```
+
+## Load Data
+
+Here is where we will load (ie. pull) our data as a ".csv" format into our R script. Additionally, this is where we would also inspect our data.
+
+```{r}
+intertidal_data <- read_csv(here("week_13", "data", "intertidaldata.csv")) # loads the data from a .csv file
+glimpse(intertidal_data) # allows us to inspect the data
+```
+
+## Data Analysis
+
+### Cleaning Data
+```{r}
+clean_intertidal_data <- intertidal_data %>% 
+  clean_names() %>% # cleans names of columns
+  mutate(quadrat = str_replace_all(quadrat, "[^a-zA-Z]", ""), # removes non-characters that aren't btw a-z
+         quadrat = str_trim(quadrat), # removes all white space
+         quadrat = factor(quadrat, levels = c("Low", "Mid", "High"))) # converts to a factor and reorders
+glimpse(clean_intertidal_data)
+```
+
+### Plotting Data
+
+```{r clean_intertidal_plot, fig.width=5, fig.height=5, fig.align='center', fig.cap="Figure 1. This figure represents the percent coverage of algae in each ocean tide quadrat by location."}
+clean_intertidal_plot <- clean_intertidal_data %>% 
+  drop_na() %>% # removes all NA's
+  ggplot(aes(x = quadrat,
+             y = site,
+             fill = algae)) +
+  geom_tile() + # heat map function
+  labs(x = "Ocean Tide Quadrat",
+       y = "Location",
+       fill = "% Cover in Quadrat",
+       title = "Algae Population") +
+  scale_fill_viridis(discrete = FALSE) + # sets heat map colors
+  theme_classic() + # sets theme to classic
+  theme(plot.title = element_text(hjust = .5)) # centers plot title
+clean_intertidal_plot # prints plot
+```
